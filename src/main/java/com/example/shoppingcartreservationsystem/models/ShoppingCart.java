@@ -3,7 +3,7 @@ package com.example.shoppingcartreservationsystem.models;
 import jakarta.persistence.*;
 import java.util.HashMap;
 
-public class Reservation {
+public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,7 @@ public class Reservation {
     public String userName;
     public HashMap<String, Product> products;
     private int quantity;
+    private Product product;
 
 
     public Long getId() {
@@ -24,8 +25,8 @@ public class Reservation {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public HashMap<String, Product> getProduct() {
+        return products;
     }
 
     public void setProduct(Product product) {

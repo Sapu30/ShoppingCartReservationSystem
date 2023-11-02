@@ -18,9 +18,9 @@ import java.util.List;
 @RequestMapping("products")
 public class ProductController {
 
-
     @Autowired
-    ProductService productService;
+    private ProductService productService;
+
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
@@ -51,16 +51,28 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{productId}")
     ResponseEntity<?> getProduct(@PathVariable Long productId){
-        logger.debug("---Reading product '" + productId +"'---");
+        logger.debug("---Getting product '" + productId +"'---");
         Product product = productService.getProductById(productId);
 
         if(product == null){
-            logger.error("---Unable to read product'" + productId +"' not found---");
+            logger.error("---Unable to get product'" + productId +"' not found---");
             throw new RuntimeException();
         }
         return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 
+//    @RequestMapping(method = RequestMethod.GET, value = "/{productName}")
+//    ResponseEntity<?> getProduct(@PathVariable String productName){
+//        logger.debug("---Getting product '" + productName +"'---");
+//        Product product = productService.getProductByName(productName);
+//
+//        if(product == null){
+//            logger.error("---Unable to get product'" + productName +"' not found---");
+//            throw new RuntimeException();
+//        }
+//        return new ResponseEntity<Product>(product, HttpStatus.OK);
+//    }
+//
     @RequestMapping(method = RequestMethod.PUT, value = "/{productId}")
     ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody Product input){
         logger.info("---Updating product '" + productId +"'---");
@@ -71,7 +83,7 @@ public class ProductController {
             throw new RuntimeException();
         }
 
-        Product updated = productService.save(input);`
+        Product updated = productService.save(input);
         return new ResponseEntity<Product>(updated, HttpStatus.OK);
 
     }
@@ -87,32 +99,5 @@ public class ProductController {
             throw new RuntimeException();
         }
     }
-
-
-//    @GetMapping
-//    public List<Product> getAllProducts() {
-//        return productService.getAllProducts();
-//    }
-//
-//    @GetMapping("/{id}")
-//    public Product getProductById(@PathVariable Long id) {
-//        return productService.getProductById(id);
-//    }
-//
-//    @PostMapping
-//    public Product createProduct(@RequestBody Product product) {
-//        return productService.createProduct(product);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-//        return productService.updateProduct(id, product);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteProduct(@PathVariable Long id) {
-//        productService.deleteProduct(id);
-//    }
-
 
 }
