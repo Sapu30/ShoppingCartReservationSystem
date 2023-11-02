@@ -1,40 +1,22 @@
 package com.example.shoppingcartreservationsystem.service;
 
-import com.example.shoppingcartreservationsystem.models.Reservation;
-import com.example.shoppingcartreservationsystem.repository.ReservationRepository;
-import com.example.shoppingcartreservationsystem.repository.ReservationRepository;
+import com.example.shoppingcartreservationsystem.models.ShoppingCart;
+import com.example.shoppingcartreservationsystem.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class ReservationService {
 
-    @Autowired
-    private ReservationRepository reservationRepository;
+public interface ShoppingCartService {
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
-    }
+    public List<ShoppingCart> findAll();
 
-    public Reservation getReservationById(Long id) {
-        return reservationRepository.findById(id).orElse(null);
-    }
+    List<ShoppingCart> findByUserName(String userName);
 
-    public Reservation createReservation(Reservation Reservation) {
-        return reservationRepository.save(Reservation);
-    }
+    ShoppingCart findByCartId(Long cartId);
 
-    public Reservation updateReservation(Long id, Reservation Reservation) {
-        if (reservationRepository.existsById(id)) {
-            Reservation.setId(id);
-            return reservationRepository.save(Reservation);
-        }
-        return null;
-    }
+    ShoppingCart save(ShoppingCart shoppingCart);
 
-    public void deleteReservation(Long id) {
-        reservationRepository.deleteById(id);
-    }
+    void deleteShoppingCart(Long cartId);
 }

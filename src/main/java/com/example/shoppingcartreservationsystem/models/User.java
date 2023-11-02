@@ -1,10 +1,14 @@
 package com.example.shoppingcartreservationsystem.models;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name="users")
 public class User {
     @Id
-    private String id;
+    private Long userId;
 
     public String userName;
     public String firstName;
@@ -20,8 +24,8 @@ public class User {
         this.password = password;
     }
 
-    public String getId(){
-        return this.id;
+    public Long getUserId(){
+        return this.userId;
     }
 
 

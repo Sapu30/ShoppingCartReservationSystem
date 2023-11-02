@@ -1,46 +1,35 @@
 package com.example.shoppingcartreservationsystem.service;
 
 import com.example.shoppingcartreservationsystem.models.Product;
-import com.example.shoppingcartreservationsystem.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-@Service
-public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
-
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Product getProductById(Long productId) {
-        List<Product> products = productRepository.findByProductId(productId);
-        if (products.isEmpty()) {
-            throw new RuntimeException("Product with ID " + productId + " not found");
-        }
-        return products.get(0);
-    }
-
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    public Product updateProduct(Long id, Product product) {
-        if (productRepository.existsById(id)) {
-            product.setProductId(id);
-            return productRepository.save(product);
-        }
-        return null;
-    }
-
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-    }
 
 
+public interface ProductService {
+
+//    @Autowired
+//    ProductRepository productRepository;
+
+//    public abstract List<Product> getAllProducts();
+
+    List<Product> getAllProducts();
+
+    Product createProduct(Product product);
+
+    Product getProductById(Long productId);
+
+//    public Product getProductByName(String productName);
+
+
+    Product updateProduct(Long id, Product product);
+
+    Product save(Product input);
+
+    boolean exists(Long productId);
+
+    void deleteProduct(Long productId);
+
+    Object findByProductId(Long productId);
+
+    void addStock(List<Product> productList);
 }

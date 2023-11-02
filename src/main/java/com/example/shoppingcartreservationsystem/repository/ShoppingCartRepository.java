@@ -1,8 +1,17 @@
 package com.example.shoppingcartreservationsystem.repository;
 
-import com.example.shoppingcartreservationsystem.models.Reservation;
+import com.example.shoppingcartreservationsystem.models.Product;
+import com.example.shoppingcartreservationsystem.models.ShoppingCart;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ShoppingCartRepository extends JpaRepository<Reservation, Long> {
-    // Custom query methods can be added here if needed
+import java.util.List;
+@Repository
+public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
+
+    public List<ShoppingCart> findAll();
+
+    public List<ShoppingCart> findByUserName(String userName);
+
+
 }

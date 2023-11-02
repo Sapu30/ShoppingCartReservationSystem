@@ -1,16 +1,19 @@
 package com.example.shoppingcartreservationsystem.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="product")
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
     private String productName;
     private double price;
     private int stock;
+
+    public Product(){ }
 
     public Product(Long productId, String productName, double price, int stock){
         this.productId = productId;
@@ -32,24 +35,33 @@ public class Product {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
+//    public void setProductName(String productName) {
+//        this.productName = productName;
+//    }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+//    public void setPrice(double price) {
+//        this.price = price;
+//    }
 
     public int getStock() {
         return stock;
     }
 
+
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public boolean removeStock() {
+        return false;
+    }
+
+    public void addStock() {
+    }
+
 
 }

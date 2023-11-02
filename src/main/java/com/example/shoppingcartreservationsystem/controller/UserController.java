@@ -18,7 +18,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 //    BCryptPasswordEncoder bCryptPasswordEncoder
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -53,17 +53,17 @@ public class UserController {
                         input.firstName,
                         input.lastName,
                         input.email,
-                        input.getPassword(),
+                        input.getPassword()
                 ));
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(result.getId()).toUri();
+                .fromCurrentRequest().path("/{userId}")
+                .buildAndExpand(result.getUserId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
-    User readUser(@PathVariable String userId){
+    User readUser(@PathVariable Long userId){
         logger.debug("---Reading User '" + userId + "'---");
         User User = userService.findOne(userId);
 
@@ -71,18 +71,18 @@ public class UserController {
             return User;
         }
         else {
-            throw new RuntimeException(userId);
+            throw new RuntimeException(String.valueOf(userId));
         }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
-    ResponseEntity<?> delete(@PathVariable String userId){
+    ResponseEntity<?> delete(@PathVariable Long userId){
         if(userService.exists(userId)){
             logger.debug("---Deleting user '"+ userId + "'---");
             return ResponseEntity.ok("User '" + userId + "' deleted.");
         }
         else {
-            throw new RuntimeException(userId);
+            throw new RuntimeException();
         }
     }
 }

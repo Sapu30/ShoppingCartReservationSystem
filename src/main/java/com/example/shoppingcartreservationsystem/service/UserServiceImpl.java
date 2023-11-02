@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl{
+public class UserServiceImpl implements UserService{
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
 //    public User getUserName(String userName) {
 //        List<User> users = (List<User>) userRepository.findByUserName(userName);
@@ -55,15 +55,15 @@ public class UserServiceImpl{
         return userRepository.save(user);
     }
 
-    public User findOne(String userId) {
-        List<User> users = userRepository.findById(userId);
+    public User findOne(Long userId) {
+        List<User> users = userRepository.findByUserId(userId);
         if (users.isEmpty()) {
             throw new RuntimeException("Product with ID " + userId + " not found");
         }
         return users.get(0);
     }
 
-    public boolean exists(String userId) {
+    public boolean exists(Long userId) {
         return true;
     }
 }
