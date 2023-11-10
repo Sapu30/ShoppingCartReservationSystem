@@ -19,7 +19,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-//    BCryptPasswordEncoder bCryptPasswordEncoder
+//    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
@@ -49,6 +49,7 @@ public class UserController {
         logger.debug("---Adding new user '" + input.lastName +" " + input.firstName +"'---");
         User result = userService.save(
                 new User(
+                        input.getUserId(),
                         input.getUserName(),
                         input.firstName,
                         input.lastName,

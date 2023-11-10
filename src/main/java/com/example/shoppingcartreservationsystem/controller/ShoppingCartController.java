@@ -173,9 +173,8 @@ public class ShoppingCartController {
 //            throw new RuntimeException(String.valueOf(cartId));
 //        }
 //
-//        if(!cart.productQuantities.isEmpty()){
+//        if(Objects.nonNull(cart.productQuantities)){
 //            List<Product> productList = new ArrayList<Product>();
-//            for(Map.Entry<Long, Integer> entry: cart.productQuantities.entrySet()){
 //                Product product = (Product) this.productServices.findByProductId(entry.getKey());
 //                if(product != null){
 //                    product.addStock();

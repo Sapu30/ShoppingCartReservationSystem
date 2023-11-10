@@ -49,8 +49,8 @@ public class ProductController {
         return new ResponseEntity<Product>(result, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{productId}")
-    ResponseEntity<?> getProduct(@PathVariable Long productId){
+    @RequestMapping(method = RequestMethod.GET, value = "/id/{productId}")
+    ResponseEntity<?> getProductById(@PathVariable Long productId){
         logger.debug("---Getting product '" + productId +"'---");
         Product product = productService.getProductById(productId);
 
@@ -61,18 +61,18 @@ public class ProductController {
         return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 
-//    @RequestMapping(method = RequestMethod.GET, value = "/{productName}")
-//    ResponseEntity<?> getProduct(@PathVariable String productName){
-//        logger.debug("---Getting product '" + productName +"'---");
-//        Product product = productService.getProductByName(productName);
-//
-//        if(product == null){
-//            logger.error("---Unable to get product'" + productName +"' not found---");
-//            throw new RuntimeException();
-//        }
-//        return new ResponseEntity<Product>(product, HttpStatus.OK);
-//    }
-//
+    @RequestMapping(method = RequestMethod.GET, value = "/name/{productName}")
+    ResponseEntity<?> getProductByName(@PathVariable String productName){
+        logger.debug("---Getting product '" + productName +"'---");
+        Product product = productService.getProductByName(productName);
+
+        if(product == null){
+            logger.error("---Unable to get product'" + productName +"' not found---");
+            throw new RuntimeException();
+        }
+        return new ResponseEntity<Product>(product, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/{productId}")
     ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody Product input){
         logger.info("---Updating product '" + productId +"'---");

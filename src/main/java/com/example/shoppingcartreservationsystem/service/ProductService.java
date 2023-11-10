@@ -32,4 +32,6 @@ public interface ProductService {
     Object findByProductId(Long productId);
 
     void addStock(List<Product> productList);
+
+    Product getProductByName(String productName);
 }

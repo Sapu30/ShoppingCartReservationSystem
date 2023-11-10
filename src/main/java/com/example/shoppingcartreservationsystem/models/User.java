@@ -1,13 +1,12 @@
 package com.example.shoppingcartreservationsystem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     public String userName;
@@ -16,7 +15,10 @@ public class User {
     public String email;
     private String password;
 
-    public User(String userName, String firstName, String lastName, String email, String password) {
+    public User(){ }
+
+    public User(Long userId,String userName, String firstName, String lastName, String email, String password) {
+        this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
