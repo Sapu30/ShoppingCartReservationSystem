@@ -21,14 +21,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<List<Product>> getAllProducts(){
         logger.info("---Getting all products---");
         List<Product> products = productService.getAllProducts();
-
         if(products.isEmpty()){
             logger.error("---Did not find any product---");
             throw new RuntimeException();

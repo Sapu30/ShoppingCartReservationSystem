@@ -29,7 +29,7 @@ public interface ProductService {
 
     void deleteProduct(Long productId);
 
-    Object findByProductId(Long productId);
+    Product findByProductId(Long productId);
 
     void addStock(List<Product> productList);
 

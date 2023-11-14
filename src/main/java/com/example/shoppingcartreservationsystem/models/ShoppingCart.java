@@ -20,19 +20,22 @@ public class ShoppingCart {
     public String userName;
     @OneToMany(cascade = CascadeType.ALL)
     public List<Product> products;
-    public int productQuantities;
-    public int totalPrice = 0;
+//    public int productQuantities;
+    public int totalQuantity;
+    public double totalPrice = 0.0;
+//    public int totalPrice = 0;
+
 
     public ShoppingCart(){ }
 
     public ShoppingCart(String status, String userName,
                         List<Product> products,
-                        int productQuantities,
-                        int totalPrice){
+                        int totalQuantity,
+                        double totalPrice){
         this.status = status;
         this.userName = userName;
         this.products = products;
-        this.productQuantities = productQuantities;
+        this.totalQuantity = totalQuantity;
         this.totalPrice = totalPrice;
     }
 
@@ -46,7 +49,7 @@ public class ShoppingCart {
 
 //    public void addProduct(Product product){
 //
-//        Product fromCart = this.products.get(products.getProductId());
+//        Product fromCart = products.get(products.getStock());
 //
 //        if(fromCart == null){
 //            this.products.put(product.getProductId(), product);
@@ -83,6 +86,31 @@ public class ShoppingCart {
 //        this.totalPrice += product.getPrice();
 //    }
 
+
+//    public void addProductQuantity(Product productToAdd) {
+//        Long productIdToAdd = productToAdd.getProductId();
+//
+//        // Check if the product is already in the cart
+//        for (Product product : products) {
+//            if (product.getProductId().equals(productIdToAdd)) {
+//                // Product found in the cart, increment the quantity
+//
+//                int newQuantity = this.getTotalQuantity() + 1;
+//                this.setTotalQuantity(newQuantity);
+//                product.setProductQuantity(product.getProductQuantity()+1);
+//                //remove stock
+//                product.setStock(product.getStock()-1);
+//                this.totalPrice += product.getPrice();
+//                return; // Exit the method
+//            }
+//        }
+//
+//        // If the product is not in the cart, add it
+//        productToAdd.setStock(1); // Assuming you have a set method for quantity
+//        products.add(productToAdd);
+//        this.totalPrice += productToAdd.getPrice();
+//    }
+
     public void addProductQuantity(Product productToAdd) {
         Long productIdToAdd = productToAdd.getProductId();
 
@@ -90,28 +118,40 @@ public class ShoppingCart {
         for (Product product : products) {
             if (product.getProductId().equals(productIdToAdd)) {
                 // Product found in the cart, increment the quantity
-                int newQuantity = product.getStock() + 1;
-                product.setStock(newQuantity);
+
+                int newQuantity = product.getProductQuantity() + 1;
+                product.setProductQuantity(newQuantity);
+
+                // Remove stock only if there is stock available
+                if (product.getStock() > 0) {
+                    product.setStock(product.getStock() - 1);
+                }
+
+                // Update total quantity and total price
+                this.totalQuantity += totalQuantity;
                 this.totalPrice += product.getPrice();
                 return; // Exit the method
             }
         }
 
         // If the product is not in the cart, add it
-        productToAdd.setStock(1); // Assuming you have a set method for quantity
+        productToAdd.setStock(productToAdd.getStock() - 1); // Assuming you have a set method for stock
+        productToAdd.setProductQuantity(1); // Assuming you have a set method for quantity
         products.add(productToAdd);
+
+        // Update total quantity and total price
+        this.setTotalQuantity(this.getTotalQuantity() + 1);
         this.totalPrice += productToAdd.getPrice();
     }
 
 
 
 
-//
-//    public void removeProduct(Long productId){
-//        if(this.products.containsKey(productId)){
-//            this.products.remove(productId);
-//        }
-//    }
+    public void removeProduct(Long productId){
+        if(this.products.contains(productId)){
+            this.products.remove(productId);
+        }
+    }
 //
 //    public void removeProductQuantity(Product product){
 //

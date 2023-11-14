@@ -1,8 +1,8 @@
 package com.example.shoppingcartreservationsystem.service;
 
 import com.example.shoppingcartreservationsystem.models.Product;
+import com.example.shoppingcartreservationsystem.models.User;
 import com.example.shoppingcartreservationsystem.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,8 +63,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Object findByProductId(Long productId) {
-        return null;
+    public Product findByProductId(Long productId) {
+        List<Product> products = productRepository.findByProductId(productId);
+        if (products.isEmpty()) {
+            throw new RuntimeException("Product with ID " + productId + " not found");
+        }
+        return products.get(0);
     }
 
     @Override

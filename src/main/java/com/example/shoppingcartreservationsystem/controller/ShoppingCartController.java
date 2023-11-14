@@ -4,6 +4,7 @@ import com.example.shoppingcartreservationsystem.models.Product;
 import com.example.shoppingcartreservationsystem.models.ShoppingCart;
 import com.example.shoppingcartreservationsystem.service.ProductService;
 import com.example.shoppingcartreservationsystem.service.ShoppingCartService;
+import com.example.shoppingcartreservationsystem.service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +22,14 @@ public class ShoppingCartController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ShoppingCartController.class);
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private ProductService productServices;
+
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ShoppingCartController.class);
+
 
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<List<ShoppingCart>> getShoppingCarts(){
@@ -36,17 +43,17 @@ public class ShoppingCartController {
         return new ResponseEntity<List<ShoppingCart>>(carts, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/user/{userName}")
-    ResponseEntity<List<ShoppingCart>> getShoppingCartsByUserName(@PathVariable String userName) {
-        logger.info("---Getting all shopping carts for user '"+ userName +"'---");
-        List<ShoppingCart> carts = this.shoppingCartService.findByUserName(userName);
-
-        if(carts.isEmpty()){
-            logger.error("---Did not find shopping carts for user '"+ userName +"'---");
-            throw new RuntimeException(userName);
-        }
-        return new ResponseEntity<List<ShoppingCart>>(carts, HttpStatus.OK);
-    }
+//    @RequestMapping(method = RequestMethod.GET, value = "/user/{userName}")
+//    ResponseEntity<List<ShoppingCart>> getShoppingCartsByUserName(@PathVariable String userName) {
+//        logger.info("---Getting all shopping carts for user '"+ userName +"'---");
+//        List<ShoppingCart> carts = this.shoppingCartService.findByUserName(userName);
+//
+//        if(carts.isEmpty()){
+//            logger.error("---Did not find shopping carts for user '"+ userName +"'---");
+//            throw new RuntimeException(userName);
+//        }
+//        return new ResponseEntity<List<ShoppingCart>>(carts, HttpStatus.OK);
+//    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{cartId}")
     ResponseEntity<?> readShoppingCart(@PathVariable Long cartId){
@@ -62,19 +69,23 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> add(@RequestBody ShoppingCart input, UriComponentsBuilder ucBuilder){
+    ResponseEntity<?> add(@RequestBody ShoppingCart input){
+        if(!userService.findByUserName(input.userName)){
+            return ResponseEntity.ok("user not existed");
+        }
+        if(shoppingCartService.findByUserName(input.userName)){
+            return ResponseEntity.ok("shoppingCart of the user already existed");
+        }
+
         ShoppingCart result = this.shoppingCartService.save(
                 new ShoppingCart(
                         ShoppingCart.PENDING,
                         input.userName,
                         input.products,
-                        input.productQuantities,
+                        input.totalQuantity,
                         input.totalPrice
                 ));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/carts/{id}").buildAndExpand(result.getCartId()).toUri());
-        return new ResponseEntity<ShoppingCart>(result, headers, HttpStatus.CREATED);
+        return new ResponseEntity<ShoppingCart>(result, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{cartId}/product/{productId}")
@@ -87,7 +98,7 @@ public class ShoppingCartController {
             throw new RuntimeException(String.valueOf(cartId));
         }
 
-        Product product = (Product) this.productServices.findByProductId(productId);
+        Product product = this.productServices.findByProductId(productId);
 
         if(product == null){
             logger.error("---Unable to update product'" + productId +"' not found---");
@@ -96,10 +107,7 @@ public class ShoppingCartController {
 
         cart.addProduct(product);
         cart.addProductQuantity(product);
-        //update product stock
-        if(!product.removeStock()){
-            return new ResponseEntity<ShoppingCart>(cart, HttpStatus.ACCEPTED);
-        }
+
 
         ShoppingCart updated = this.shoppingCartService.save(cart);
         this.productServices.save(product);
@@ -117,7 +125,8 @@ public class ShoppingCartController {
             throw new RuntimeException(String.valueOf(cartId));
         }
 
-        Product product = (Product) this.productServices.findByProductId(productId);
+
+        Product product = this.productServices.findByProductId(productId);
 
         if(product == null){
             logger.error("---Unable to update product'" + productId +"' not found---");
@@ -164,28 +173,43 @@ public class ShoppingCartController {
     }
 
 //    @RequestMapping(method = RequestMethod.DELETE, value = "/{cartId}")
-//    ResponseEntity<?> delete(@PathVariable Long cartId){
-//        logger.info("---Deleting shopping cart '" + cartId +"'---");
+//    public ResponseEntity<?> delete(@PathVariable Long cartId) {
+//        logger.info("---Deleting shopping cart '" + cartId + "'---");
 //        ShoppingCart cart = this.shoppingCartService.findByCartId(cartId);
 //
-//        if(cart == null){
-//            logger.error("---Unable to delete shopping cart '" + cartId +"' not found---");
+//        if (cart == null) {
+//            logger.error("---Unable to delete shopping cart '" + cartId + "' not found---");
 //            throw new RuntimeException(String.valueOf(cartId));
 //        }
 //
-//        if(Objects.nonNull(cart.productQuantities)){
-//            List<Product> productList = new ArrayList<Product>();
-//                Product product = (Product) this.productServices.findByProductId(entry.getKey());
-//                if(product != null){
-//                    product.addStock();
+//        if (Objects.nonNull(cart.getProductQuantities())) {
+//            List<Product> productList = new ArrayList<>();
+//
+//            for (Map.Entry<Long, Integer> entry : cart.getProductQuantities()) {
+//                Long productId = entry.getKey();
+//                int quantity = entry.getValue();
+//
+//                // Find the product by ID
+//                Product product = this.productServices.findByProductId(productId);
+//
+//                if (product != null) {
+//                    // Add stock to the product based on the quantity in the cart
+//                    for (int i = 0; i < quantity; i++) {
+//                        product.addStock();
+//                    }
 //                    productList.add(product);
 //                }
 //            }
-//            if(!productList.isEmpty()) this.productServices.addStock(productList);
+//
+//            if (!productList.isEmpty()) {
+//                // Update the stock for all products
+//                this.productServices.addStock(productList);
+//            }
 //        }
 //
 //        this.shoppingCartService.deleteShoppingCart(cartId);
-//        return new ResponseEntity<ShoppingCart>(HttpStatus.NO_CONTENT);
-//
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //    }
+
+
 }

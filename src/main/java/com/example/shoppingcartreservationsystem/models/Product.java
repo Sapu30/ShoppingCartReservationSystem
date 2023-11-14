@@ -13,6 +13,9 @@ public class Product {
     private double price;
     private int stock;
 
+    private int productQuantity;
+
+
     public Product(){ }
 
     public Product(Long productId, String productName, double price, int stock){
@@ -63,5 +66,13 @@ public class Product {
     public void addStock() {
     }
 
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
 
 }

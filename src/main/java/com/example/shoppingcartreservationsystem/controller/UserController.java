@@ -12,6 +12,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
+
+import static com.example.shoppingcartreservationsystem.service.UserServiceImpl.hashPassword;
 
 @RestController
 @RequestMapping("/users")
@@ -25,17 +28,14 @@ public class UserController {
 
     @PostMapping("/signup")
     ResponseEntity<?> signUp(@RequestBody User user) {
-//        User.setPassword(bCryptPasswordEncoder.encode(User.getPassword()));
-        if(userService.findByUserName(user.getUserName()) != null){
-            throw new RuntimeException(user.getUserName());
+        user.setPassword(hashPassword(user.getPassword()));
+        if(userService.findByUserName(user.getUserName()) || userService.findByEmail(user.email)) {
+            return ResponseEntity.ok("User already existed");
         }
-        else if(userService.findByEmail(user.email) != null){
-            throw new RuntimeException(user.email);
-        }
-        else {
-            User newUser = userService.save(user);
-            return ResponseEntity.ok("User '" + newUser.getUserName() +"' created.");
-        }
+
+        User newUser = userService.save(user);
+        return ResponseEntity.ok("User '" + newUser.getUserName() +"' created.");
+
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -44,24 +44,6 @@ public class UserController {
         return userService.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> add(@RequestBody User input){
-        logger.debug("---Adding new user '" + input.lastName +" " + input.firstName +"'---");
-        User result = userService.save(
-                new User(
-                        input.getUserId(),
-                        input.getUserName(),
-                        input.firstName,
-                        input.lastName,
-                        input.email,
-                        input.getPassword()
-                ));
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{userId}")
-                .buildAndExpand(result.getUserId()).toUri();
-        return ResponseEntity.created(location).build();
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
     User readUser(@PathVariable Long userId){
@@ -75,6 +57,20 @@ public class UserController {
             throw new RuntimeException(String.valueOf(userId));
         }
     }
+
+
+//    @RequestMapping(method = RequestMethod.GET, value = "name/{userName}")
+//    User readUser(@PathVariable String userName){
+//        logger.debug("---Reading User '" + userName + "'---");
+//        User User = userService.findOne(userName);
+//
+//        if (User != null){
+//            return User;
+//        }
+//        else {
+//            throw new RuntimeException(String.valueOf(userName));
+//        }
+//    }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
     ResponseEntity<?> delete(@PathVariable Long userId){
