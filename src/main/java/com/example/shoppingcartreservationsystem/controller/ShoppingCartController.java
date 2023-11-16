@@ -2,6 +2,7 @@ package com.example.shoppingcartreservationsystem.controller;
 
 import com.example.shoppingcartreservationsystem.models.Product;
 import com.example.shoppingcartreservationsystem.models.ShoppingCart;
+import com.example.shoppingcartreservationsystem.models.User;
 import com.example.shoppingcartreservationsystem.service.ProductService;
 import com.example.shoppingcartreservationsystem.service.ShoppingCartService;
 import com.example.shoppingcartreservationsystem.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -35,13 +37,21 @@ public class ShoppingCartController {
     ResponseEntity<List<ShoppingCart>> getShoppingCarts(){
         logger.info("---Getting all shopping carts---");
         List<ShoppingCart> carts = this.shoppingCartService.findAll();
-
         if(carts.isEmpty()){
             logger.error("---Did not find any shopping carts---");
             throw new RuntimeException();
         }
         return new ResponseEntity<List<ShoppingCart>>(carts, HttpStatus.OK);
     }
+
+//    @RequestMapping(method = RequestMethod.GET)
+//    ResponseEntity<List<ShoppingCart>> getShoppingCarts(){
+//        Long userId = 5L;
+//        User user = this.userService.findOne(userId);
+//        List<ShoppingCart> listCartItems = shoppingCartService.listOfCartItems(user);
+//
+//        return new ResponseEntity<List<ShoppingCart>>(listCartItems, HttpStatus.OK);
+//    }
 
 //    @RequestMapping(method = RequestMethod.GET, value = "/user/{userName}")
 //    ResponseEntity<List<ShoppingCart>> getShoppingCartsByUserName(@PathVariable String userName) {
@@ -68,25 +78,25 @@ public class ShoppingCartController {
         return new ResponseEntity<ShoppingCart>(cart, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<?> add(@RequestBody ShoppingCart input){
-        if(!userService.findByUserName(input.userName)){
-            return ResponseEntity.ok("user not existed");
-        }
-        if(shoppingCartService.findByUserName(input.userName)){
-            return ResponseEntity.ok("shoppingCart of the user already existed");
-        }
-
-        ShoppingCart result = this.shoppingCartService.save(
-                new ShoppingCart(
-                        ShoppingCart.PENDING,
-                        input.userName,
-                        input.products,
-                        input.totalQuantity,
-                        input.totalPrice
-                ));
-        return new ResponseEntity<ShoppingCart>(result, HttpStatus.CREATED);
-    }
+//    @RequestMapping(method = RequestMethod.POST)
+//    ResponseEntity<?> add(@RequestBody ShoppingCart input){
+//        if(!userService.findByUserName(input.userName)){
+//            return ResponseEntity.ok("user not existed");
+//        }
+//        if(shoppingCartService.findByUserName(input.userName)){
+//            return ResponseEntity.ok("shoppingCart of the user already existed");
+//        }
+//
+//        ShoppingCart result = this.shoppingCartService.save(
+//                new ShoppingCart(
+//                        ShoppingCart.PENDING,
+//                        input.userName,
+//                        Collections.singletonList(input.products),
+//                        input.totalQuantity,
+//                        input.totalPrice
+//                ));
+//        return new ResponseEntity<ShoppingCart>(result, HttpStatus.CREATED);
+//    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{cartId}/product/{productId}")
     ResponseEntity<?> addProduct(@PathVariable Long cartId, @PathVariable Long productId){
@@ -105,8 +115,8 @@ public class ShoppingCartController {
             throw new RuntimeException(String.valueOf(productId));
         }
 
-        cart.addProduct(product);
-        cart.addProductQuantity(product);
+//        cart.addProduct(product);
+//        cart.addProductQuantity(product);
 
 
         ShoppingCart updated = this.shoppingCartService.save(cart);
@@ -133,7 +143,7 @@ public class ShoppingCartController {
             throw new RuntimeException(String.valueOf(productId));
         }
 
-        cart.removeProductQuantity(product);
+//        cart.removeProductQuantity(product);
 
         product.addStock();
 

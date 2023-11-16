@@ -1,6 +1,7 @@
 package com.example.shoppingcartreservationsystem.service;
 
 import com.example.shoppingcartreservationsystem.models.ShoppingCart;
+import com.example.shoppingcartreservationsystem.models.User;
 import com.example.shoppingcartreservationsystem.repository.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public ShoppingCart save(ShoppingCart shoppingCart) {
         return shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Override
+    public List<ShoppingCart> listOfCartItems(User user){
+        return shoppingCartRepository.findByUser(user);
     }
 
     @Override

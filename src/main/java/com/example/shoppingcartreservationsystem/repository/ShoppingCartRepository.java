@@ -2,6 +2,7 @@ package com.example.shoppingcartreservationsystem.repository;
 
 import com.example.shoppingcartreservationsystem.models.Product;
 import com.example.shoppingcartreservationsystem.models.ShoppingCart;
+import com.example.shoppingcartreservationsystem.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,8 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
     List<ShoppingCart> findByCartId(Long CartId);
 
 
+//    List<User> findByUser(User user);
+
+
+    List<ShoppingCart> findByUser(User user);
 }

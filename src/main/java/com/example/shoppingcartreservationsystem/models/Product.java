@@ -13,7 +13,7 @@ public class Product {
     private double price;
     private int stock;
 
-    private int productQuantity;
+//    private int productQuantity;
 
 
     public Product(){ }
@@ -67,12 +67,12 @@ public class Product {
     }
 
 
-    public int getProductQuantity() {
-        return productQuantity;
-    }
-
-    public void setProductQuantity(int productQuantity) {
-        this.productQuantity = productQuantity;
-    }
+//    public int getProductQuantity() {
+//        return productQuantity;
+//    }
+//
+//    public void setProductQuantity(int productQuantity) {
+//        this.productQuantity = productQuantity;
+//    }
 
 }

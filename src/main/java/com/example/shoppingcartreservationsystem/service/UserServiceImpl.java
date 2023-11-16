@@ -2,6 +2,8 @@ package com.example.shoppingcartreservationsystem.service;
 
 import com.example.shoppingcartreservationsystem.models.User;
 import com.example.shoppingcartreservationsystem.repository.UserRepository;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,4 +96,12 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException(e);
         }
     }
+
+//    public User getCurrentlyLoggedInCustomer(Authentication authentication){
+//        if(authentication == null) return null;
+//
+//        User user = null;
+//        Object principal = authentication.getPrincipal()
+//
+//    }
 }
