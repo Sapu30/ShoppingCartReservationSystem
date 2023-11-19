@@ -1,5 +1,6 @@
 package com.example.shoppingcartreservationsystem.service;
 
+import com.example.shoppingcartreservationsystem.models.CartItems;
 import com.example.shoppingcartreservationsystem.models.Product;
 import com.example.shoppingcartreservationsystem.models.User;
 import com.example.shoppingcartreservationsystem.repository.ProductRepository;

@@ -1,5 +1,6 @@
 package com.example.shoppingcartreservationsystem.service;
 
+import com.example.shoppingcartreservationsystem.models.CartItems;
 import com.example.shoppingcartreservationsystem.models.Product;
 
 import java.util.List;
@@ -34,4 +35,5 @@ public interface ProductService {
     void addStock(List<Product> productList);
 
     Product getProductByName(String productName);
+
 }

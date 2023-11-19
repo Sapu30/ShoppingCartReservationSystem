@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    Boolean findByUserName(String userName);
+    User findByUserName(String userName);
 
     Boolean findByEmail(String email);
 
@@ -14,9 +14,14 @@ public interface UserService {
 
     List<User> findAll();
 
-    User findOne(Long userId);
+
+    User findOne(String userName);
 
 //    User findByName(String userName);
 
     boolean exists(Long userId);
+
+    void deleteUser(Long userId);
+
+    User updateUser(String userName, User input);
 }

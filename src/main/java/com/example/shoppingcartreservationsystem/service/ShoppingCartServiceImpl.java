@@ -1,6 +1,6 @@
 package com.example.shoppingcartreservationsystem.service;
 
-import com.example.shoppingcartreservationsystem.models.ShoppingCart;
+import com.example.shoppingcartreservationsystem.models.CartInfo;
 import com.example.shoppingcartreservationsystem.models.User;
 import com.example.shoppingcartreservationsystem.repository.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -21,44 +22,51 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public List<ShoppingCart> findAll(){
+    public List<CartInfo> findAll() {
         return shoppingCartRepository.findAll();
     }
 
     @Override
-    public boolean findByUserName(String userName) {
-        List<String> userNames = shoppingCartRepository.findByUserName();
-        String filterUserName =  userNames.stream().filter(u -> u.equals(userName)).findFirst().orElse(null);
-        if(filterUserName == null){
-            return false;
-        }
-        return true;
+    public CartInfo findByShoppingCartID(Long shoppingCartId) {
+        return shoppingCartRepository.findByShoppingCartID(shoppingCartId);
     }
 
     @Override
-    public ShoppingCart findByCartId(Long cartId) {
-        List<ShoppingCart> shoppingCart = shoppingCartRepository.findByCartId(cartId);
+    public Long findByUserName(String userName) {
+        Long cartId = shoppingCartRepository.findByUserName(userName);
+
+        return cartId;
+    }
+
+    @Override
+    public CartInfo findByCartId(Long cartId) {
+        List<CartInfo> shoppingCart = shoppingCartRepository.findByCartId(cartId);
         if (shoppingCart.isEmpty()) {
             throw new RuntimeException("Cart with ID " + cartId + " not found");
         }
         return shoppingCart.get(0);
     }
 
-    @Override
     @Transactional
-    public ShoppingCart save(ShoppingCart shoppingCart) {
-        return shoppingCartRepository.save(shoppingCart);
+    public Integer save(CartInfo cartInfo, User user) {
+        return shoppingCartRepository.saveCartInfo(cartInfo, user.getUserId());
+    }
+
+    @Transactional
+    public Integer updateStatus(CartInfo cartInfo) {
+        return shoppingCartRepository.updateCartStatus(cartInfo);
+    }
+
+    @Transactional
+    public Integer deleteShoppingCart(Long cartId) {
+        return shoppingCartRepository.deleteCartInfo(cartId);
     }
 
     @Override
-    public List<ShoppingCart> listOfCartItems(User user){
+    public List<CartInfo> listOfCartItems(User user) {
         return shoppingCartRepository.findByUser(user);
     }
 
-    @Override
-    public void deleteShoppingCart(Long cartId) {
-
-    }
 
 
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -12,14 +12,17 @@ public class User {
     private Long userId;
 
     public String userName;
+    @JsonIgnore
     public String firstName;
+    @JsonIgnore
     public String lastName;
     public String email;
     private String password;
 
-    public User(){ }
+    public User() {
+    }
 
-    public User(Long userId,String userName, String firstName, String lastName, String email, String password) {
+    public User(Long userId, String userName, String firstName, String lastName, String email, String password) {
         this.userId = userId;
         this.userName = userName;
         this.firstName = firstName;
@@ -28,12 +31,10 @@ public class User {
         this.password = password;
     }
 
-    public Long getUserId(){
+    public Long getUserId() {
         return this.userId;
     }
 
-
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -50,4 +51,7 @@ public class User {
         this.userName = userName;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

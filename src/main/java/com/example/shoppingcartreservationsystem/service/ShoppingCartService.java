@@ -1,5 +1,6 @@
 package com.example.shoppingcartreservationsystem.service;
 
+import com.example.shoppingcartreservationsystem.models.CartInfo;
 import com.example.shoppingcartreservationsystem.models.ShoppingCart;
 import com.example.shoppingcartreservationsystem.models.User;
 
@@ -8,15 +9,22 @@ import java.util.List;
 
 public interface ShoppingCartService {
 
-    public List<ShoppingCart> findAll();
+    public List<CartInfo> findAll();
 
-    boolean findByUserName(String userName);
+    CartInfo findByShoppingCartID(Long shoppingCartId);
 
-    ShoppingCart findByCartId(Long cartId);
+    Long findByUserName(String userName);
 
-    ShoppingCart save(ShoppingCart shoppingCart);
+    Integer save(CartInfo cartInfo, User user);
 
-   List<ShoppingCart> listOfCartItems(User user);
+    Integer updateStatus(CartInfo cartInfo);
 
-    void deleteShoppingCart(Long cartId);
+    Integer deleteShoppingCart(Long cartId);
+
+
+    CartInfo findByCartId(Long cartId);
+
+    List<CartInfo> listOfCartItems(User user);
+
+
 }
