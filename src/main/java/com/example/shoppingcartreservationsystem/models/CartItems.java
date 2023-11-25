@@ -20,6 +20,8 @@ public class CartItems {
     private Integer productQuantity;
     private Double price;
 
+    private Integer status;
+
     public Integer getCartItemId() {
         return cartItemId;
     }
@@ -66,5 +68,13 @@ public class CartItems {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

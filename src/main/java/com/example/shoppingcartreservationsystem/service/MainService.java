@@ -53,8 +53,8 @@ public class MainService {
         if (!Objects.nonNull(cartId)) {
             return null;
         }
-        return this.findByCartId(cartId);
 
+        return this.findByCartId(cartId);
     }
 
 
@@ -88,7 +88,7 @@ public class MainService {
         Integer updateQueries = this.cartItemService.save(cartItems);
 
         //update product stock
-        product.setStock(product.getStock()-quantity);
+        product.setStock(product.getStock() - quantity);
         this.productServices.save(product);
 
         return updateQueries;
@@ -96,31 +96,34 @@ public class MainService {
 
     public Integer removeCartItemsFromCart(Long cartId, List<CartItems> cartItems) {
         cartItems.forEach(cartItem -> cartItem.setShoppingCartId(cartId));
-        return this.cartItemService.removeCartItemsFromCart(cartItems);
 
+        return this.cartItemService.removeCartItemsFromCart(cartItems);
     }
 
     public Integer updateStatus(ShoppingCart cart) {
+
+        //fetching all cartitems
+        List<CartItems> cartItems = this.cartItemService.findAllByShoppingCartID(cart.getCartInfo().getCartId());
+
+        //updating cart items
+        this.cartItemService.updateCartItemStatusAfterOrder(cartItems);
+
+        // Updating cart
         return this.shoppingCartService.updateStatus(cart.getCartInfo());
     }
 
     public Integer deleteShoppingCart(Long cartId) {
         Integer UpdatedQueries = 0;
         this.shoppingCartService.deleteShoppingCart(cartId);
-        UpdatedQueries+=this.cartItemService.deleteCartItemsByShoppingCartId(cartId);
+        UpdatedQueries += this.cartItemService.deleteCartItemsByShoppingCartId(cartId);
 
         return UpdatedQueries;
     }
 
 
-
     public List<CartItems> fetchAllOrderedCarts() {
         List<CartItems> cartItems = this.cartItemService.findAllCartItems();
+
         return cartItems;
     }
-
-
-
 }
-
-

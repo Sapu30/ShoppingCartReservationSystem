@@ -69,4 +69,14 @@ public class CartItemService {
     public Integer deleteCartItemsByShoppingCartId(Long shoppingCartId) {
         return cartItemRepository.DeleteByShoppingCartId(shoppingCartId);
     }
+
+    @Transactional
+    public Integer updateCartItemStatusAfterOrder(List<CartItems> cartItems) {
+        Integer updateQueries = 0;
+        for (CartItems cartItem : cartItems) {
+            updateQueries += cartItemRepository.updateStatus(cartItem);
+        }
+
+        return updateQueries;
+    }
 }
