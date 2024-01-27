@@ -18,4 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByUserId(Long userId);
 
+    @Query(value = "SELECT * FROM users", nativeQuery = true)
+    List<User> fetchAllUser();
+
 }

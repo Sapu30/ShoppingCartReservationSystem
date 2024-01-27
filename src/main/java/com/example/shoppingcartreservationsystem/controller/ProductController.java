@@ -22,8 +22,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
+    /* logger -> A logger in software development records messages
+                 for debugging and monitoring application behavior. */
+     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
+
+    /**
+     * get all products
+     * @return list of products
+     */
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<List<Product>> getAllProducts(){
         logger.info("---Getting all products---");
@@ -35,6 +43,11 @@ public class ProductController {
         return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
     }
 
+
+    /**
+     * create new product
+     * @params Product
+     */
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<?> createProduct(@RequestBody Product input){
         logger.debug("---Adding new product '" + input.getProductName() +"'---");
@@ -48,6 +61,12 @@ public class ProductController {
         return new ResponseEntity<Product>(result, HttpStatus.CREATED);
     }
 
+
+    /**
+     * get product id
+     * @params ProductId
+     * @return Product
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/id/{productId}")
     ResponseEntity<?> getProductById(@PathVariable Long productId){
         logger.debug("---Getting product '" + productId +"'---");
@@ -60,6 +79,12 @@ public class ProductController {
         return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 
+
+    /**
+     * get product name
+     * @params ProductId
+     * @return Product
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/name/{productName}")
     ResponseEntity<?> getProductByName(@PathVariable String productName){
         logger.debug("---Getting product '" + productName +"'---");
@@ -72,6 +97,11 @@ public class ProductController {
         return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 
+    /**
+     * update product name
+     * @params ProductId
+     * @return Product
+     */
     @RequestMapping(method = RequestMethod.PUT, value = "/{productId}")
     ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody Product input){
         logger.info("---Updating product '" + productId +"'---");
@@ -87,6 +117,10 @@ public class ProductController {
 
     }
 
+    /**
+     * delete product
+     * @params ProductId
+     */
     @RequestMapping(method = RequestMethod.DELETE, value = "/{productId}")
     ResponseEntity<?> deleteProduct(@PathVariable Long productId){
         if(productService.exists(productId)){

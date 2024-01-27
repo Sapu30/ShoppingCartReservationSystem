@@ -3,8 +3,11 @@ package com.example.shoppingcartreservationsystem.service;
 import com.example.shoppingcartreservationsystem.models.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
+
+    Map<String, Object> login(User user);
 
     User findByUserName(String userName);
 

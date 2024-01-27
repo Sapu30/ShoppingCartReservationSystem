@@ -62,9 +62,9 @@ public class ShoppingCartController {
         logger.info("---Getting all shopping carts for user '" + userName + "'---");
         ShoppingCart cart = this.mainService.findByUserName(userName);
 
-        if(!Objects.nonNull(cart)){
-            logger.error("---Did not find shopping carts for user '"+ userName +"'---");
-            throw new RuntimeException("---Did not find shopping carts for user '"+ userName +"'---");
+        if (!Objects.nonNull(cart)) {
+            logger.error("---Did not find shopping carts for user '" + userName + "'---");
+            throw new RuntimeException("---Did not find shopping carts for user '" + userName + "'---");
         }
         return new ResponseEntity<ShoppingCart>(cart, HttpStatus.OK);
     }
@@ -96,8 +96,8 @@ public class ShoppingCartController {
             return new ResponseEntity<>("shoppingCart of the user does not existed", HttpStatus.NOT_IMPLEMENTED);
         }
 
-            Long cartProductId = cartItems.get(0).getProductId();
-            Product product = this.productServices.getProductById(cartProductId);
+        Long cartProductId = cartItems.get(0).getProductId();
+        Product product = this.productServices.getProductById(cartProductId);
 
         if (Objects.nonNull(this.mainService.addCartItemsToCart(cartId, cartItems, product))) {
             return new ResponseEntity<>("Product Added Successfully", HttpStatus.OK);

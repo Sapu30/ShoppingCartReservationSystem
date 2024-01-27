@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static com.example.shoppingcartreservationsystem.service.UserServiceImpl.hashPassword;
@@ -38,6 +39,19 @@ public class UserController {
         User newUser = userService.save(user);
         return ResponseEntity.ok("User '" + newUser.getUserName() +"' created.");
 
+    }
+
+    @PostMapping("/login")
+    ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            return ResponseEntity.ok(userService.login(user));
+        }
+        catch (SecurityException e){
+            throw new SecurityException("Internal Server Error");
+        }
+        catch (NoSuchElementException e){
+            throw new NoSuchElementException("No user found");
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -76,6 +90,21 @@ public class UserController {
     }
 
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
+    ResponseEntity<?> delete(@PathVariable Long userId){
+        if(userService.exists(userId)){
+            logger.debug("---Deleting user '"+ userId + "'---");
+            userService.deleteUser(userId);
+            return ResponseEntity.ok("User '" + userId + "' deleted.");
+        }
+        else {
+            throw new RuntimeException();
+        }
+    }
+
+
+
+
 //    @RequestMapping(method = RequestMethod.GET, value = "name/{userName}")
 //    User readUser(@PathVariable String userName){
 //        logger.debug("---Reading User '" + userName + "'---");
@@ -89,15 +118,4 @@ public class UserController {
 //        }
 //    }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
-    ResponseEntity<?> delete(@PathVariable Long userId){
-        if(userService.exists(userId)){
-            logger.debug("---Deleting user '"+ userId + "'---");
-            userService.deleteUser(userId);
-            return ResponseEntity.ok("User '" + userId + "' deleted.");
-        }
-        else {
-            throw new RuntimeException();
-        }
-    }
 }

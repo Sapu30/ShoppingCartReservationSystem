@@ -13,9 +13,6 @@ public class Product {
     private double price;
     private int stock;
 
-//    private int productQuantity;
-
-
     public Product(){ }
 
     public Product(Long productId, String productName, double price, int stock){
@@ -38,17 +35,11 @@ public class Product {
         return productName;
     }
 
-//    public void setProductName(String productName) {
-//        this.productName = productName;
-//    }
 
     public double getPrice() {
         return price;
     }
 
-//    public void setPrice(double price) {
-//        this.price = price;
-//    }
 
     public int getStock() {
         return stock;

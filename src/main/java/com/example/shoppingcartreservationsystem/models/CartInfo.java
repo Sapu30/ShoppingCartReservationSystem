@@ -28,7 +28,6 @@ public class CartInfo {
         this.user = user;
     }
 
-
     public Long getCartId(){
         return cartId;
     }
