@@ -87,8 +87,7 @@ Below are the key API endpoints provided by the Shopping Cart Reservation System
 | `/order/{cartId}` | POST   | To Order a cart            |
 | `/{cartId}` | DELETE | Delete a cart by ID        |
 
-
-                    +----------------+
+'                     +----------------+
                     |      User      |
                     +----------------+
                             |
@@ -142,8 +141,8 @@ Below are the key API endpoints provided by the Shopping Cart Reservation System
                           | Product        |
                           | Order          |
                           +----------------+
-
-
+                          
+'
 
 ### Examples
 
