@@ -88,61 +88,8 @@ Below are the key API endpoints provided by the Shopping Cart Reservation System
 | `/{cartId}` | DELETE | Delete a cart by ID        |
 
 
-`                    +----------------+
-                    |      User      |
-                    +----------------+
-                            |
-                            v
-                    +----------------+
-                    |  Frontend/UI   |
-                    +----------------+
-                            |
-                            v
-                    +----------------+
-                    |  API Gateway   |
-                    | Auth Routing   |
-                    | Rate Limiting  |
-                    +----------------+
-                            |
-                            v
-                    +----------------+
-                    | Load Balancer  |
-                    +----------------+
-                            |
-        ------------------------------------------------
-        |                         |                    |
-        v                         v                    v
-+----------------+       +----------------+     +----------------+
-| Auth Service   |       | Cart Service   |     | Order Service  |
-| Signup/Login   |       | Create Cart    |     | Place Order    |
-| JWT Token      |       | Add/Delete Item|     | Order Status   |
-+----------------+       +----------------+     +----------------+
-        |                         |                    |
-        --------------------------|---------------------
-                                  v
-                          +----------------+
-                          | Reservation    |
-                          | Logic          |
-                          | Check Stock    |
-                          | Reserve Item   |
-                          +----------------+
-                                  |
-                                  v
-                          +----------------+
-                          | Product/Stock  |
-                          | Service        |
-                          +----------------+
-                                  |
-                                  v
-                          +----------------+
-                          | MySQL Database |
-                          | User           |
-                          | Cart           |
-                          | CartItem       |
-                          | Product        |
-                          | Order          |
-                          +----------------+
-                          `
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a007a5a2-d7d0-4cd0-b9d0-de2b38820ae7" />
+
                           
 
 ### Examples
