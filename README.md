@@ -26,6 +26,17 @@ A shopping cart reservation system with CRUD functionality, designed to manage p
   This system is desing keeping customers and mostly administrators in mind, to have an effective reservation system.
   The Shopping Cart Reservation System aims to address this need by offering a seamless experience for users looking to reserve products and for administrators managing the reservation process.
 
+  I developed a Shopping Cart Reservation System using Java 17, Spring Boot, MySQL, Maven, Spring Data JPA, and JWT authentication.
+The main purpose of this project was to allow users to add products to a cart, reserve items, update cart items, delete items, and finally place an order.
+
+I created REST APIs for user signup, cart creation, fetching carts by cart ID or username, adding products to a cart, deleting products from a cart, placing orders, and deleting carts.
+
+For database operations, I used Spring Data JPA with MySQL. For security, I implemented login authentication using JWT token, so only authenticated users can access protected APIs.
+
+The main entities were User, Cart, CartItem, Product, and Order. The cart maintained the selected products and their reservation status, so admins or users could track whether a product was reserved, updated, deleted, or ordered.
+
+This project helped me understand how to design CRUD APIs, manage relationships between entities, handle authentication, and build a backend flow similar to an e-commerce cart system.
+
 ## Features
 
 - **CRUD Operations:** Create, Read, Update, and Delete operations for managing product reservations.
@@ -75,6 +86,62 @@ Below are the key API endpoints provided by the Shopping Cart Reservation System
 | `/carts/{cartId}/cartItem`    | DELETE | Delete a product in a cart |
 | `/order/{cartId}` | POST   | To Order a cart            |
 | `/{cartId}` | DELETE | Delete a cart by ID        |
+
+
+                    +----------------+
+                    |      User      |
+                    +----------------+
+                            |
+                            v
+                    +----------------+
+                    |  Frontend/UI   |
+                    +----------------+
+                            |
+                            v
+                    +----------------+
+                    |  API Gateway   |
+                    | Auth Routing   |
+                    | Rate Limiting  |
+                    +----------------+
+                            |
+                            v
+                    +----------------+
+                    | Load Balancer  |
+                    +----------------+
+                            |
+        ------------------------------------------------
+        |                         |                    |
+        v                         v                    v
++----------------+       +----------------+     +----------------+
+| Auth Service   |       | Cart Service   |     | Order Service  |
+| Signup/Login   |       | Create Cart    |     | Place Order    |
+| JWT Token      |       | Add/Delete Item|     | Order Status   |
++----------------+       +----------------+     +----------------+
+        |                         |                    |
+        --------------------------|---------------------
+                                  v
+                          +----------------+
+                          | Reservation    |
+                          | Logic          |
+                          | Check Stock    |
+                          | Reserve Item   |
+                          +----------------+
+                                  |
+                                  v
+                          +----------------+
+                          | Product/Stock  |
+                          | Service        |
+                          +----------------+
+                                  |
+                                  v
+                          +----------------+
+                          | MySQL Database |
+                          | User           |
+                          | Cart           |
+                          | CartItem       |
+                          | Product        |
+                          | Order          |
+                          +----------------+
 
 ### Examples
 
